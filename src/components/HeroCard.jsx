@@ -1,97 +1,126 @@
-import Avatar from '@mui/material/Avatar';
-import AvatarGroup from '@mui/material/AvatarGroup';
-// import Stack from '@mui/material/Stack';
-// import SportsVolleyballIcon from '@mui/icons-material/SportsVolleyball';
-import SearchIcon from '@mui/icons-material/Search';
-import CallMadeIcon from '@mui/icons-material/CallMade';
-
-
-import React from "react";
-import heroImage from '../img/hero.jpeg'
-import heroImage1 from '../img/1.jpg'
-import heroImage2 from '../img/2.jpg'
-import heroImage3 from '../img/3.jpg'
-import LinkButton from './LinkButton';
-import RightLinkButton from './RightLinkButton';
-import MouseIcon from '@mui/icons-material/Mouse';
+import CallMadeIcon from "@mui/icons-material/CallMade";
+import MouseIcon from "@mui/icons-material/Mouse";
+import SearchIcon from "@mui/icons-material/Search";
+import Avatar from "@mui/material/Avatar";
+import AvatarGroup from "@mui/material/AvatarGroup";
+import React, { useEffect, useState } from "react";
+import { GiHamburgerMenu } from "react-icons/gi";
+import heroImage1 from "../img/1.jpg";
+import heroImage2 from "../img/2.jpg";
+import heroImage3 from "../img/3.jpg";
+import heroImage from "../img/hero.jpeg";
+import LinkButton from "./LinkButton";
+import RightLinkButton from "./RightLinkButton";
 
 function HeroCard() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Prevent scrolling when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [isOpen]);
+
+  const manuItems = [
+    { name: "Home" },
+    { name: "Programs" },
+    { name: "Coaches" },
+    { name: "Schedule" },
+  ];
+
   return (
-    <div 
-    class="lg:h-screen flex flex-col justify-around bg-cover bg-center m-2 rounded-xl p-8 relative" 
-    style={{ backgroundImage: `url(${heroImage})`  }}>
-        <div class="absolute inset-0 bg-black bg-opacity-50 rounded-xl"></div>
+    <div
+      className="lg:h-screen flex flex-col justify-around bg-cover bg-center m-2 rounded-xl p-8 relative"
+      style={{ backgroundImage: `url(${heroImage})` }}
+    >
+      {/* Background Overlay */}
+      <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl z-0"></div>
 
-        <div className='flex flex-1 z-10  justify-between'>
-            <div>
-            {/* <button type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"><span className='pr-2 '><SportsVolleyballIcon/></span><span className='hidden sm:inline-block'> Slugger. </span></button> */}
+      {/* Navbar */}
+      <div className="flex items-center justify-between relative z-20">
+        <LinkButton />
 
-              <LinkButton/>
-            </div>
-            <div>
-            <ul className="flex gap-2 flex-col space-y-4 md:space-y-0 md:flex-row md:justify-around">
-          {/* Navigation Buttons */}
-          {["Home", "Programs", "Coaches", "Schedule"].map((item, index) => (
-            <li key={index} className="text-center md:text-left">
-              <button
-                type="button"
-                className="w-full md:w-auto text-white border border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-              >
-                {item}
-              </button>
+        {/* Mobile Menu Icon (visible on small screens) */}
+        <GiHamburgerMenu
+          className="text-white text-3xl md:hidden cursor-pointer"
+          onClick={() => setIsOpen(!isOpen)}
+        />
+
+        {/* Navigation Menu */}
+        <div
+          className={`${
+            isOpen
+              ? "fixed inset-0 bg-black bg-opacity-70 z-[60] flex flex-col items-center justify-center text-white md:hidden"
+              : "hidden"
+          } md:flex md:gap-6 md:items-center md:static md:bg-transparent md:z-auto md:w-auto`}
+        >
+          <ul className="flex flex-col md:flex-row gap-8 text-center md:text-left">
+            {manuItems.map((item, index) => (
+              <li key={index}>
+                <button
+                  type="button"
+                  className="text-white text-lg md:text-base font-medium border border-gray-300 rounded-full px-8 py-3 bg-gray-800 hover:bg-gray-700 transition-all"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.name}
+                </button>
+              </li>
+            ))}
+            <li className="mt-6 md:mt-0">
+              <div className="rounded-full p-4 bg-white inline-block">
+                <SearchIcon className="text-black text-3xl" />
+              </div>
             </li>
-          ))}
-          {/* Icon Button */}
-          <li className="flex justify-center md:justify-start">
-            <div className="rounded-full  p-2 bg-white">
-              <SearchIcon className="text-black" />
-            </div>
-          </li>
-        </ul>
-            </div>
-            <div>
-            <div>
-            {/* <button type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"><span className='hidden sm:inline-block'> Slugger. </span> <span className='pl-2 '><SportsVolleyballIcon/></span></button> */}
-            <RightLinkButton/>
-            </div>
-            </div>
-        </div>
-        
-
-        <div className='flex flex-col flex-1 z-10  gap-2 py-3 max-w-sm justify-start '>
-            <div className='flex items-start bg-white w-fit p-2 rounded-full bg-opacity-55'><AvatarGroup spacing="small">
-        <Avatar alt="Remy Sharp" src={heroImage1} />
-        <Avatar alt="Remy Sharp" src={heroImage2} />
-        <Avatar alt="Remy Sharp" src={heroImage3} />
-       
-      </AvatarGroup></div>
-            <div className='text-white text-justify'>
-            Join a growing community of baseball enthusiasts who've sharpened their skills and boosted their confidence with our expert-led training. Be part of the success stories!
-            </div>
+          </ul>
+          {/* Close Button for Mobile Menu */}
+          <button
+            className="mt-8 text-lg md:hidden underline"
+            onClick={() => setIsOpen(false)}
+          >
+            Close Menu
+          </button>
         </div>
 
-        
-        <div className='flex-1 z-10 max-w-sm lg:max-w-md'>
-        <p className='font-sans text-2xl text-white lg:text-6xl'>
+        <RightLinkButton />
+      </div>
 
-            Join a Passionate Community of Softball Enthusiasts!
-            <span className='bg-black rounded-full p-3 text-white text-sm ml-2 lg:text-xl '> Join Us
-                <CallMadeIcon className="text-black bg-white rounded-lg ml-2 w-32"  />
-            </span>
+      {/* Content Section */}
+      <div className="flex flex-col flex-1  gap-4 py-3 max-w-sm lg:max-w-md relative">
+        <div className="flex items-start bg-white w-fit p-2 rounded-full bg-opacity-55">
+          <AvatarGroup spacing="small">
+            <Avatar alt="Remy Sharp" src={heroImage1} />
+            <Avatar alt="Travis Howard" src={heroImage2} />
+            <Avatar alt="Cindy Baker" src={heroImage3} />
+          </AvatarGroup>
+        </div>
+        <div className="text-white text-justify leading-relaxed">
+          Join a growing community of baseball enthusiasts who've sharpened
+          their skills and boosted their confidence with our expert-led
+          training. Be part of the success stories!
+        </div>
+      </div>
 
+      {/* Call to Action */}
+      <div className=" max-w-sm lg:max-w-md relative">
+        <p className="font-sans text-2xl lg:text-6xl text-white leading-tight">
+          Join a Passionate Community of Softball Enthusiasts!
+          <span className="bg-black rounded-full p-3 text-white text-sm ml-2 lg:text-xl inline-flex items-center">
+            Join Us
+            <CallMadeIcon className="text-black bg-white rounded-lg ml-2 w-8 h-8 lg:w-12 lg:h-12" />
+          </span>
         </p>
-            
-        </div>
+      </div>
 
-<div className='flex gap-2 absolute right-0 bottom-0 m-3 text-white'>
-  <p>
-    Scroll Down
-  </p>
-  <MouseIcon/>
-
-</div>
+      {/* Scroll Down Indicator */}
+      <div className="absolute right-4 bottom-4 flex items-center gap-2 text-white z-50">
+        <p className="text-sm lg:text-base">Scroll Down</p>
+        <MouseIcon className="w-6 h-6" />
+      </div>
     </div>
-  )
+  );
 }
 
-export default HeroCard
+export default HeroCard;
